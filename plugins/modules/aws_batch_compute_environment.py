@@ -278,10 +278,10 @@ def validate_params(module):
     compute_environment_name = module.params['compute_environment_name']
 
     # validate compute environment name
-    if not re.search(r'^[\w\_:]+$', compute_environment_name):
+    if not re.search(r'^[-\w\_:]+$', compute_environment_name):
         module.fail_json(
-            msg="Function compute_environment_name {0} is invalid. Names must contain only alphanumeric characters "
-                "and underscores.".format(compute_environment_name)
+            msg="Function compute_environment_name {0} is invalid. Names must contain only alphanumeric characters, "
+                "dashes, and underscores.".format(compute_environment_name)
         )
     if not compute_environment_name.startswith('arn:aws:batch:'):
         if len(compute_environment_name) > 128:
