@@ -237,14 +237,14 @@ def validate_params(module, aws):
         module.fail_json(
             msg='Function name {0} is invalid. Names must contain only alphanumeric characters and hyphens.'.format(function_name)
         )
-    if len(function_name) > 64 and not function_name.startswith('arn:aws:lambda:'):
+    if len(function_name) > 64 and not (function_name.startswith('arn:aws:lambda:') or function_name.startswith('arn:aws-cn:lambda:')):
         module.fail_json(msg='Function name "{0}" exceeds 64 character limit'.format(function_name))
 
-    elif len(function_name) > 140 and function_name.startswith('arn:aws:lambda:'):
+    elif len(function_name) > 140 and (function_name.startswith('arn:aws:lambda:') or function_name.startswith('arn:aws-cn:lambda:')):
         module.fail_json(msg='ARN "{0}" exceeds 140 character limit'.format(function_name))
 
     # check if 'function_name' needs to be expanded in full ARN format
-    if not module.params['lambda_function_arn'].startswith('arn:aws:lambda:'):
+    if not (module.params['lambda_function_arn'].startswith('arn:aws:lambda:') or module.params['lambda_function_arn'].startswith('arn:aws-cn:lambda:')):
         function_name = module.params['lambda_function_arn']
         module.params['lambda_function_arn'] = 'arn:aws:lambda:{0}:{1}:function:{2}'.format(aws.region, aws.account_id, function_name)
 
