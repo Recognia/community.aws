@@ -368,8 +368,10 @@ def main():
             elif current_secret.get("DeletedDate") and recovery_window == 0:
                 result = camel_dict_to_snake_dict(secrets_mgr.delete_secret(secret.name, recovery_window=recovery_window))
                 changed = True
+            else:
+                result = {"msg": "secret already marked for deletion"}
         else:
-            result = "secret does not exist"
+            result = {"msg": "secret does not exist"}
     if state == 'present':
         if current_secret is None:
             result = secrets_mgr.create_secret(secret)
